@@ -4,9 +4,9 @@
 #include <string>
 #include <unistd.h>
 #include <stdio.h>
-#include "./lib/aeColor.h"
-#include "./lib/aeUtilitario.h"
-#include "./lib/aeUtility.h"
+#include "../lib/aeColor.h"
+#include "../lib/aeUtilitario.h"
+#include "../lib/aeUtility.h"
 
 using namespace std;
 
