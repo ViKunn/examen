@@ -9,6 +9,8 @@
 #include <iostream>
 #include <windows.h>
 
+using namespace std;
+
 #define TIEMPO 100000
 enum escapes { 
 	BELL 		= '\a', 
@@ -62,44 +64,4 @@ void aeGetLinea(char *str)    // line[lim = 10] -->   {h|o|l|a| |c|o|m|o|\n|\0|~
         str[i++] = c;
     }while(c != '\n');
     str[i]  == '\0';
-}
-
-void aeLoading()
-{
-    int contadorC=0;
-    char c[] ="\\|/- ";
-
-    for (int i = 0; i <= 100; i++)
-    {
-        if(contadorC==5)
-            contadorC =0;
-        printf("%c%c%c %d %% ", RETORNO,TAB, c[contadorC++],i);
-        usleep(TIEMPO);
-    }
-}
-
-void aeLoadingShort()
-{
-    char c[] ="\\|/- ";
-    for (int i = 0; i <= 100; i++)
-    {
-        //contadorC== (i%5==0) ? i%5 : 0;
-        printf("\r%c %3d %% ",c[i%5],i);
-        //usleep(TIEMPO);
-    }
-}
-
-void aeLoadingBar(int size)
-{ 
-    char barra[size];
-    float porcentaje = (float)100/(float)size;
-    for (int i = 0; i <= size; i++)
-        barra[i]=' ';
-    
-    for (int i = 0; i <= size; i++)
-    {
-        barra[i]='#';
-        printf("%c%c [%s]  %.0f %%", RETORNO, TAB, barra, i*porcentaje);
-        usleep(TIEMPO*2);
-    }
 }

@@ -8,6 +8,7 @@
 using namespace std;
 
 #define SLEEP 50000
+#define TIEMPO 100000
 
 /** Entrada de NÚMERO ENTERO
  * Solicita al usuario ingresar un número entero y realiza la validación de entrada
@@ -137,7 +138,7 @@ int aeFibonacci(int num)
  * Ayuda a confirmar que el caracter sea vocal
  * Usa: String
 */
-bool aeesVocal(const string& letra)
+bool aeEsVocal(const string& letra)
 {
     string vocales = "aeiouAEIOU";
     return (letra.length() == 1) && (vocales.find(letra) != string::npos);
@@ -146,7 +147,7 @@ bool aeesVocal(const string& letra)
 /** Entrada de CONSONANTES
  * Ayuda a confirmar que el caracter sea consonante
 */
-bool aeesConsonante(const string& letra)
+bool aeEsConsonante(const string& letra)
 {
     string consonantes = "bcdfghjklmnpqrstvwxyzBCDFGHJKLMNPQRSTVWXYZ";
     return (letra.length() == 1) && (consonantes.find(letra) != string::npos);
@@ -165,7 +166,7 @@ bool aeConfirmarVocal(char vocal)
 /** Número Primo
  * Determina si un número es primo o no
 */
-int aeesPrimo(int num) 
+int aeEsPrimo(int num) 
 {
     int i;
 
@@ -305,36 +306,42 @@ void aeShowWaitingLoading(int size)
     }
 }
 
-// /** FUNCIÓN DE LOGEO
-//  * @param user
-//  * @param password
-// */
-// void aeLogin(string user, string password)
-// {
-//     string user_ = user;
-//     string password_ = password;
-//     string user_aux;
-// }
+void aeLoading()
+{
+    int contadorC=0;
+    char c[] ="\\|/- ";
 
-
-/*
-bool login(const string& username, const string& password) {
-  // Check the username and password against a database of users.
-  if (username == "username" && password == "password") {
-    return true;
-  } else {
-    return false;
-  }
+    for (int i = 0; i <= 100; i++)
+    {
+        if(contadorC==5)
+            contadorC =0;
+        printf("%c%c%c %d %% ", RETORNO,TAB, c[contadorC++],i);
+        usleep(TIEMPO);
+    }
 }
-*/
 
-
-//how to create a method to make login?
-
-/*
-if (login("username", "password")) {
-  // The user is logged in.
-} else {
-  // The user is not logged in.
+void aeLoadingShort()
+{
+    char c[] ="\\|/- ";
+    for (int i = 0; i <= 100; i++)
+    {
+        //contadorC== (i%5==0) ? i%5 : 0;
+        printf("\r%c %3d %% ",c[i%5],i);
+        //usleep(TIEMPO);
+    }
 }
-*/
+
+void aeLoadingBar(int size)
+{ 
+    char barra[size];
+    float porcentaje = (float)100/(float)size;
+    for (int i = 0; i <= size; i++)
+        barra[i]=' ';
+    
+    for (int i = 0; i <= size; i++)
+    {
+        barra[i]='#';
+        printf("%c%c [%s]  %.0f %%", RETORNO, TAB, barra, i*porcentaje);
+        usleep(TIEMPO*2);
+    }
+}
