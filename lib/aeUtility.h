@@ -23,14 +23,6 @@ enum escapes {
 
 enum months { ENE = 1, FEB, MAR, ABR, MAY, JUN, JUL, AGO, SEP, OCT, NOV, DIC };
 
-void aeClearTerminal()
-{
-    // system("cls||clear"); 
-    // fflush(stdout); 
-    cout << "\033[H\033[2J\033[3J" ;
-    cin.clear();
-}
-
 int aeGetNumeroPositivo(char *label) //
 {
     int numero;
@@ -64,4 +56,19 @@ void aeGetLinea(char *str)    // line[lim = 10] -->   {h|o|l|a| |c|o|m|o|\n|\0|~
         str[i++] = c;
     }while(c != '\n');
     str[i]  == '\0';
+}
+
+enum aeColor { azul = 1, verde, celeste, rojo, rosado, salmon, blanco, plomo, rosaPalo = 13, naranja};
+
+string aeSetColor(aeColor c)           //se utiliza como string para poder concatenar. "Hacer tunin"
+{
+     HANDLE col = GetStdHandle(STD_OUTPUT_HANDLE);          //pausa en el sistema para settear Color
+     SetConsoleTextAttribute(col, c);
+     return "";
+}
+
+void aeClearTerminal()
+{
+    cout << "\033[H\033[2J\033[3J" ;
+    cin.clear();
 }

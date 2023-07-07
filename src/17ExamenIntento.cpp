@@ -6,26 +6,27 @@
 using namespace std;
 #define DELAY 55000
 
-bool obsEstaIzq = true;  //false = 0
-int opcionMenu = -1, anchoRio = 20, OBSE = 0, LOBO = 1, CAPE = 2, UVAS = 3;
-string arrIzq[] = {"Observador", "   Lobo   ", "Caperucita", "   Uvas   "},     //el número de caracteres de cada vector es 10
-       arrDer[] = {".",     "",     "",     ""},
-       actorCruza = "";                                 //Obse[0]  Lobo[1]  Cape[2]  Uvas[3]
+bool aeObsEstaIzq = true;  //false = 0
+int aeOpcionMenu = -1, aeAnchoRio = 20, aeObservador = 0, aeLobo = 1, aeCaperucita = 2, aeUvas = 3;
+
+string aeArrIzq[]   = {"Observador", "   Lobo   ", "Caperucita", "   Uvas   "},     //el número de caracteres de cada vector es 10
+       aeArrDer[]   = {".",     "",     "",     ""},
+       aeActorCruza = "";                                 //Obse[0]  Lobo[1]  Cape[2]  Uvas[3]
 
 //No siempre es bueno utilizar variables globales
 
 // MÉTODOS PARA INCLUIR EN LIBRERIAS
 
-enum color { azul = 1, verde, celeste, rojo, rosado, salmon, blanco, plomo, rosaPalo = 13, naranja};
+enum aeColor { azul = 1, verde, celeste, rojo, rosado, salmon, blanco, plomo, rosaPalo = 13, naranja};
 
-string setColor(color c)           //se utiliza como string para poder concatenar. "Hacer tunin"
+string aeSetColor(aeColor c)           //se utiliza como string para poder concatenar. "Hacer tunin"
 {
      HANDLE col = GetStdHandle(STD_OUTPUT_HANDLE);          //pausa en el sistema para settear Color
      SetConsoleTextAttribute(col, c);
      return "";
 }
 
-void clearTerminal()
+void aeClearTerminal()
 {
     cout << "\033[H\033[2J\033[3J" ;
     cin.clear();
@@ -33,23 +34,23 @@ void clearTerminal()
 
 // MÉTODOS DEL EXAMEN
 
-string showActor(const string arr[])
+string aeShowActor(const string aeArr[])
 {
-     string actor = "";
+     string aeActor = "";
      for(int i=0; i<4; i++)
-          actor += arr[i] + ", ";           //concatenar strings
-     return actor;
+          aeActor += aeArr[i] + ", ";           //concatenar strings
+     return aeActor;
 }
 
-string showRio(int lenRio)
+string aeShowRio(int aeLenRio)
 {
-     string rio = "";
-     for (int i = 0; i < lenRio-1; i++)
-          rio += "_ ";
-     return rio;
+     string aeRio = "";
+     for (int i = 0; i < aeLenRio-1; i++)
+          aeRio += "_ ";
+     return aeRio;
 }
 
-void menu()
+void aeMenu()
 {
      cout << "0 Solo"         << endl
           << "1 Lobo"         << endl
@@ -60,46 +61,46 @@ void menu()
      do{       //unicamente para escoger el actor no para cambiarlo de string
           try
           {
-               string str = "";
+               string aeStr = "";
                cout << ">Cruzar: ";
-               cin >> str;                                       //Entrada de datos string y luego validación de datos
-               opcionMenu = stoi(str);                           //string a int "stoi"
-               actorCruza = (obsEstaIzq) ? arrIzq[opcionMenu] : arrDer [opcionMenu];      //modifica la variable global de acuerdo a donde está el observador
-               if(opcionMenu == 4)      exit(0);
-               if(actorCruza.empty())
+               cin >> aeStr;                                       //Entrada de datos string y luego validación de datos
+               aeOpcionMenu = stoi(aeStr);                           //string a int "stoi"
+               aeActorCruza = (aeObsEstaIzq) ? aeArrIzq[aeOpcionMenu] : aeArrDer [aeOpcionMenu];      //modifica la variable global de acuerdo a donde está el observador
+               if(aeOpcionMenu == 4)      exit(0);
+               if(aeActorCruza.empty())
                     throw invalid_argument("No hay actor");      //Se muere el programa
           //trow No hay actor cuando el string de alguno de los lados está vacío, dependiendo de donde está el observador
           }
 
           catch(...)                                             //recupera la muerte del programa y vuelve a intentar, los 3 puntos sirven para decir "no me importa"
           {
-               actorCruza = "";
-               opcionMenu = -1;                                  //se reinicia la opción del menú
+               aeActorCruza = "";
+               aeOpcionMenu = -1;                                  //se reinicia la opción del menú
                cout << ":(Opción no válida...) \n";              //cerr es lo mismo que cout
           }
-     }while(opcionMenu<0);                                       //bucle hasta que la opción seleccionada sea válida
+     }while(aeOpcionMenu<0);                                       //bucle hasta que la opción seleccionada sea válida
 }
 
-void navegar()
+void aeNavegar()
 {
-     string barca = "\\_Observador , "+actorCruza+"_/";            //concatenación de caracteres
-     string actorIzq = showActor(arrIzq);
-     string actorDer = showActor(arrDer);
+     string aeBarca    = "\\_Observador , "+aeActorCruza+"_/";            //concatenación de caracteres
+     string aeActorIzq = aeShowActor(aeArrIzq);
+     string aeActorDer = aeShowActor(aeArrDer);
 
-     for (int i=0; i < anchoRio; i++)
+     for (int i=0; i < aeAnchoRio; i++)
      {
-          cout << "\r" + actorIzq + showRio(i) + barca + showRio(anchoRio - i) + actorDer;             //CONCATENAR caracteres
+          cout << "\r" + aeActorIzq + aeShowRio(i) + aeBarca + aeShowRio(aeAnchoRio - i) + aeActorDer;             //CONCATENAR caracteres
           usleep(DELAY);
      }
 }
 
 int main()
 {
-     clearTerminal();
-     cout << setColor(azul) + "Bienvenido al juego del lobito: " << endl;
-     menu();
-     cout << "Está cruzando: " << actorCruza << endl;
-     navegar();
+     aeClearTerminal();
+     cout << aeSetColor(azul) + "Bienvenido al juego del lobito: " << endl;
+     aeMenu();
+     cout << "Está cruzando: " << aeActorCruza << endl;
+     aeNavegar();
      cout << endl;
 
      return 0;
@@ -111,7 +112,7 @@ LÓGICA DEL PROGRAMA
 2. Declarar variable bool para confirmar el estado del observador
 3. Declarar variables int para luego añadir en el menú
 
-     int opcionMenu = -1, anchoRio = 20, OBSE = 0, LOBO = 1, CAPE = 2, UVAS = 3;
+     int aeOpcionMenu = -1, aeAnchoRio = 20, aeObservador = 0, aeLobo = 1, aeCaperucita = 2, aeUvas = 3;
 
 4. Crear métodos
 
@@ -134,10 +135,11 @@ LÓGICA DEL PROGRAMA
      4.5. showNavegación()
           \\_patmic_,_?_/ reemplaza el ? por el actor que está cruzando
 */
+
 /*
 variables que se utilizan
-string ladoIzq = "  ", ladoDer = "  ", actorCruza = "  ";
+string ladoIzq = "  ", ladoDer = "  ", aeActorCruza = "  ";
 bool confirmar = false;
-int anchoRio = 20, OBSE = 0, LOBO = 1, CAPE = 2, UVAS = 3;
+int aeAnchoRio = 20, aeObservador = 0, aeLobo = 1, aeCaperucita = 2, aeUvas = 3;
 
 */
