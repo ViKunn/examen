@@ -1,0 +1,29 @@
+[33mcommit cf119a5909484d9c04fb7dd019fc51a85ec54e05[m[33m ([m[1;36mHEAD -> [m[1;32mf119a5909484d9c04fb7dd019fc51a85ec54e05[m[33m, [m[1;31morigin/main[m[33m, [m[1;32mmain[m[33m)[m
+Author: ViKunn <alisson.espin@epn.edu.ec>
+Date:   Thu Jul 6 20:25:38 2023 -0500
+
+    Correcciones esteticas de LOGIN y DATOS, mas pseudo funciones de juego
+
+[33mcommit 1a1051c32f9172913498e81fbc71f1f15208c963[m
+Author: ViKunn <alisson.espin@epn.edu.ec>
+Date:   Thu Jul 6 18:11:18 2023 -0500
+
+    Funciones hechas: LOGIN, DATOS DEL ESTUDIANTE, falta JUEGO
+
+[33mcommit 4cc7bb55f15b068b9f3b9d94064e349163189b7b[m
+Author: ViKunn <alisson.espin@epn.edu.ec>
+Date:   Thu Jul 6 16:45:52 2023 -0500
+
+    Funciones hechas: LOGIN
+
+[33mcommit 26f538eaf35edfe07c922dd6720ae7218dc28cd5[m
+Author: ViKunn <alisson.espin@epn.edu.ec>
+Date:   Thu Jul 6 15:15:18 2023 -0500
+
+    Examen Original
+
+[33mcommit 90f764f57cd570eb04261de72d8744be0ea9c80f[m
+Author: ViKunn <alisson.espin@epn.edu.ec>
+Date:   Tue Jun 27 14:35:57 2023 -0500
+
+    first commit
