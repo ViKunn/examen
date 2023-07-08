@@ -205,6 +205,7 @@ string aeShowRio(int aeLenRio)
 */
 string aeShowBarcaNavegando(int aeLenRio, string aeActorIzq, string aeBarca, string aeActorDer)
 {
+     aeSetColor(celeste);
      string aeBarcaEnRio = aeActorIzq + aeShowRio(aeLenRio) + aeBarca + aeShowRio(aeAnchoRio - aeLenRio) + "\t" + aeActorDer;
      usleep(DELAY);
      return aeBarcaEnRio;
@@ -251,11 +252,50 @@ void aeNavegar()
      cout << endl;
 }
 
+/** Validacion de las reglas del juego conforme a la rubrica del examen
+ * Cedula termina en 5, entonces Caperucita NO se come las Uvas 
+*/
+void aeValidarReglasJuego()
+{
+     string aeMensajeJuego = "";
+
+     bool aeTodosCruzaron  =  (!aeArrDer[aeObservador].empty() && !aeArrDer[aeLobo].empty()
+                              && !aeArrDer[aeCaperucita].empty() && !aeArrDer[aeUvas].empty());
+
+     bool aeLoboCaperucita =  (aeObsEstaIzq) ? 
+                              (!aeArrDer[aeLobo].empty() && !aeArrDer[aeCaperucita].empty()) :
+                              (!aeArrIzq[aeLobo].empty() && !aeArrIzq[aeCaperucita].empty());
+     
+     aeMensajeJuego  +=   (aeLoboCaperucita) ? "\n\t\t   El LOBO se comió a CAPERUCITA, OH NO" : "" ;
+     aeMensajeJuego  +=   (aeTodosCruzaron ) ? "\n\t\t\t     FELICIDADES GANASTE"              : "";
+
+     if (!aeMensajeJuego.empty())
+     {
+          if(aeLoboCaperucita /* || aeCaperucitaUvas */)
+          {
+               aeSetColor(rojo);
+               aeMensajeJuego += "\n\n\t\t\t\t  PERDISTE\n";
+          }
+          else
+          {
+               aeSetColor(verde);
+               aeMensajeJuego += "\n\n\t\t\t      TE SALVASTE UVITA";
+          }
+          cout << "\n\t\t\t\tFIN DEL JUEGO" << endl << aeMensajeJuego << "\n";
+          exit(0);
+     }
+}
+
 /** Menu que se presenta en consola para que el usuario escoja la opcion que desea mover junto con la barca
 */
 bool aeMenu()
 {
-     cout << "\n 0. Solo\n 1. Lobo\n 2. Caperucita\n 3. Uvas\n 4. Salir\n";
+     cout <<   endl 
+          <<   aeSetColor(rosado) + "0." << aeSetColor(celeste) + " Solo\n"
+          <<   aeSetColor(rosado) + "1." << aeSetColor(celeste) + " Lobo\n"
+          <<   aeSetColor(rosado) + "2." << aeSetColor(celeste) + " Caperucita\n" 
+          <<   aeSetColor(rosado) + "3." << aeSetColor(celeste) + " Uvas\n" 
+          <<   aeSetColor(rosado) + "4." << aeSetColor(celeste) + " Salir\n";
 
      //se encarga de validar la opción ingresada por el usuario
      do
@@ -263,7 +303,7 @@ bool aeMenu()
           try                 //Entrada de opción ingresada por el usuario
           {
                string aeOpcionIngresada = "";
-               cout << "\nCruzar con: ";
+               cout << aeSetColor(blanco) + "\nCruzar con: ";
                cin >> aeOpcionIngresada;               //lectura de la opción ingresada
                aeOpcionMenu = stoi(aeOpcionIngresada); //Transformación de string a int "stoi" para poder leer la opción ingresada con condicionales
 
@@ -281,58 +321,22 @@ bool aeMenu()
           }
      
      } while (aeOpcionMenu < 0);
-
      return true;
-}
-
-/** Validacion de las reglas del juego conforme a la rubrica del examen
- * Cedula termina en 5, entonces Caperucita NO se come las Uvas 
-*/
-void aeValidarReglasJuego()
-{
-     string aeMensajeJuego = "";
-
-     bool aeTodosCruzaron  =  (!aeArrDer[aeObservador].empty() && !aeArrDer[aeLobo].empty()
-                              && !aeArrDer[aeCaperucita].empty() && !aeArrDer[aeUvas].empty());
-
-     bool aeLoboCaperucita =  (aeObsEstaIzq) ? 
-                              (!aeArrDer[aeLobo].empty() && !aeArrDer[aeCaperucita].empty()) :
-                              (!aeArrIzq[aeLobo].empty() && !aeArrIzq[aeCaperucita].empty());
-     
-     aeMensajeJuego  +=   (aeLoboCaperucita) ? "\n   El LOBO se comió a CAPERUCITA, OH NO" : "" ;
-     aeMensajeJuego  +=   (aeTodosCruzaron ) ? "\n\t     FELICIDADES GANASTE"              : "";
-
-     if (!aeMensajeJuego.empty())
-     {
-          if(aeLoboCaperucita /* || aeCaperucitaUvas */)
-          {
-               aeSetColor(rojo);
-               aeMensajeJuego += "\n\n\t\t  PERDISTE\n\n";
-          }
-          else
-          {
-               aeSetColor(verde);
-               aeMensajeJuego += "\n\n\t      TE SALVASTE UVITA";
-          }
-          cout << "\n\t\tFIN DEL JUEGO" << endl << aeMensajeJuego << "\n\n";
-          exit(0);
-     }
 }
 
 /** Metodo que contiene la logica de como va a funcionar el juego
 */
 void aeJuegoVikingo()
 {
-     /*Aqui dentro se añade la lógica que debería tomar el programa del juego*/
+     // bool aeEstadoMenu = aeMenu();
      while (aeMenu())
      {
           if(aeOpcionMenu == 0)
                cout << "Esta cruzando: " << aeUser       << "\n\n";
           else
                cout <<"Esta cruzando: "  << aeActorCruza << "\n\n";
-          
+          aeClearTerminal();
           aeNavegar();
-
           aeValidarReglasJuego();
      }
 }
@@ -343,12 +347,7 @@ void aeJuegoVikingo()
 int main()
 {
      aeClearTerminal();
-
-     //actualiza la variable global de aeUser que luego se utiliza en la barca
-     aeCredencialesValidar();
-
-     // aeUser = "ALISSON";
-
+     aeCredencialesValidar();      //actualiza la variable global de aeUser que luego se utiliza en la barca
      aeJuegoVikingo();
 
      return 0;
