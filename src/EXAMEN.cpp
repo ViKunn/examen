@@ -1,4 +1,8 @@
-//falta documentar métodos
+/**  
+ * CORRECCIÓN EXAMEN I BIMESTRE
+ * @author     ALISSON VIVVIANA ESPÍN ORTEGA
+ * @date       07.07.2023
+*/
 
 #include <iostream>
 #include <unistd.h>
@@ -7,33 +11,47 @@
 #include <conio.h>
 #include <string>
 #include "../lib/aeUtility.h"
+
 using namespace std;
+
 #define DELAY 55000
 #define ESPERA 1800000
 
-/*Variables para Autenticación de usuario*/
+//VARIABLES PARA PRESENTACIÓN DE DATOS DEL ESTUDIANTE
 
-int aeCedula        = 1600864845,
-    aeJuegoContador = 0;                //Quizás tenga que cambiar esta variable a una que no sea global
+int aeCedula        = 1600864845;
 string aeNombre     = "Alisson Viviana Espin Ortega",
        aeCorreo     = "alisson.espin@epn.edu.ec",
        aeUser,
        aePassword;
 
-
-/*Variables para juego*/
+//VARIABLES PARA EL CASO PRÁCTICO (Juego)
 
 bool aeObsEstaIzq = true;     //false = 0
 enum {aeObservador, aeLobo, aeCaperucita, aeUvas, aeAnchoRio = 20};
-int aeOpcionMenu = -1;        // aeAnchoRio = 20, aeObservador = 0, aeLobo = 1, aeCaperucita = 2, aeUvas = 3;
+int aeOpcionMenu = -1;
 
-string aeArrIzq[]   = { "","Lobo", "Cape", "Uvas" },         //el número de caracteres de cada vector es 10
-       aeArrDer[]   = { "", "",     "",     "" },
+string aeArrIzq[]   = { " ", "Lobo", "Cape", "Uvas" },
+       aeArrDer[]   = { " ", "",     "",     "" },
        aeActorCruza = "";                                 //Obse[0]  Lobo[1]  Cape[2]  Uvas[3]
 
 
-/*MÉTODOS PARA PASAR A MAYÚSCULAS O MINÚSCULAS LOS DATOS DEL ESTUDIANTE*/
+//MÉTODOS PARA PRESENTACIÓN DE DATOS DEL ESTUDIANTE
 
+/** Pasar a MINUSCULAS
+ * @param aeTexto string, El texto que se quiere modificar 
+*/
+string aeToLower(const string& aeTexto)
+{
+    string resultado = aeTexto;
+    for (char& c : resultado)
+     c = tolower(c);
+    return resultado;
+}
+
+/** Pasar a MAYUSCULAS
+ * @param aeTexto string, El texto que se quiere modificar 
+*/
 string aeToUpper(const string& aeTexto)
 {
     string resultado = aeTexto;
@@ -41,14 +59,10 @@ string aeToUpper(const string& aeTexto)
         c = toupper(c);
     return resultado;
 }
-string aeToLower(const string& aeTexto)
-{
-    string resultado = aeTexto;
-    for (char& c : resultado)
-        c = tolower(c);
-    return resultado;
-}
-void aeDatosEstudiante()
+
+/** Metodo para presentacion de datos del estudiante en consola
+*/
+void aeShowDatosEstudiante()
 {
      aeNombre = aeToLower(aeNombre);
      aeCorreo = aeToUpper(aeCorreo);
@@ -59,9 +73,11 @@ void aeDatosEstudiante()
           << aeSetColor(rosado)   + "Nombre:\t"   << aeSetColor(celeste) << aeNombre    << "\n\n";
 }
 
+//MÉTODOS PARA LOGEO DE USUARIO
 
-/*MÉTODOS PARA VALIDACIÓN DE CREDENCIALES*/
-
+/** Encriptación de caracteres de contraseña en consola
+ * @param aeEtiqueta string, La etiqueta que se presenta al momento de pedir al usuario el ingreso de datos
+*/
 string aeGetPassword(const string aeEtiqueta)
 {
      char c;
@@ -75,9 +91,14 @@ string aeGetPassword(const string aeEtiqueta)
      }
      return aePassword;
 }
+
+/** Metodo para la lectura de USUARIO y CONTRASENA
+ * Modifica las variables globales  dependiendo de los datos ingresados por el usuario
+ * para su posterior validación
+*/
 void aeCredencialesIngresar()
 {
-     aeDatosEstudiante();
+     aeShowDatosEstudiante();
      cout << aeSetColor(rosado) +   "\t\tINICIO DE SESIÓN"  << "\n\n"
           << aeSetColor(rosado) + "Ingrese su usuario:    "    << aeSetColor(celeste);
      cin  >>  aeUser;
@@ -87,6 +108,9 @@ void aeCredencialesIngresar()
      // cout << aeSetColor(rosado) + "Ingrese su contraseña: "  << aeSetColor(celeste) ;
      // cin  >>  aePassword;
 }
+
+/** Metodo para validacion de las credenciales dependiendo de los datos ingresados por el usuario
+*/
 void aeCredencialesValidar()
 {
      //Credenciales a validar
@@ -145,76 +169,192 @@ void aeCredencialesValidar()
      // return aeConductor;
 }
 
+//MÉTODOS PARA LA EJECUCIÓN DEL JUEGO
 
-/*MÉTODOS PARA LA EJECUCIÓN DEL JUEGO*/
-
-/*
-si añado los métodos que creamos en clases podría funcionar, pero tendria que modificar los strings para que 
-en lugar de "observador" coloque "aeUser", creo que es facil pero tengo que comprobar
-
-voy a hacer un commit antes de hacer esto commit - m "Funciones hechas: LOGIN, DATOS DEL ESTUDIANTE, falta JUEGO"
+/** Muestra en consola los strings de actores creados
+ * @param aeArr string que se quiere mostrar
 */
+string aeShowActor(const string aeArr[])
+{
+     string aeActor = "";
+     for(int i=0 ; i<4 ; i++)
+          aeActor += aeArr[i] + ", ";           //concatenar strings
+     return aeActor;
+}
 
+/** Genera "_ " cierta cantidad de veces
+ * @param aeLenRio cantidad de caracteres que se quiere generar
+*/
+string aeShowRio(int aeLenRio)
+{
+     string aeRio = "";
+     for (int i = 0; i < aeLenRio-1; i++)
+          aeRio += "_ ";
+     return aeRio;
+}
 
+/** Presenta en consola la barca navegando con los actores seleccionados por el menu
+ *  
+ * 
+ * @param aeLenRio       la longitud del rio que va a tomar (aeShowRio)
+ * @param aeActorIzq     los actores que se quiere presentar a la derecha
+ * @param aeBarca        la barca con el actor seleccionado por el usuario seleccionados
+ * @param aeActorDer     los actores que se quiere presentar a la izquierda
+ * 
+ * @return               string del ultimo estado de la barca
+*/
+string aeShowBarcaNavegando(int aeLenRio, string aeActorIzq, string aeBarca, string aeActorDer)
+{
+     string aeBarcaEnRio = aeActorIzq + aeShowRio(aeLenRio) + aeBarca + aeShowRio(aeAnchoRio - aeLenRio) + "\t" + aeActorDer;
+     usleep(DELAY);
+     return aeBarcaEnRio;
+}
 
-/*LÓGICA DEL JUEGO*/
+/** Presenta la barca navegan de DER a IZQ o visceversa dependiendo del donde se encuentra el observador
+*/
+void aeNavegar()
+{
+     string aeBarca    = "\\_"+aeUser+" , "+aeActorCruza+"_/";   //Concatenación de caracteres
+     string aeActorIzq = aeShowActor(aeArrIzq);
+     string aeActorDer = aeShowActor(aeArrDer);
 
-/**Se encarga de ejecutar el juego del vikingo que quiere cruzar un rio con un lobo, caperucita y unas uvas*/
+     aeArrIzq[aeObservador] = aeArrDer[aeObservador] = " ";
+     aeArrIzq[aeOpcionMenu] = aeArrDer[aeOpcionMenu] = "";
+
+     if(aeObsEstaIzq)
+     {
+          aeArrIzq[aeObservador]= "_";
+          aeArrDer[aeOpcionMenu]= aeActorCruza;
+          aeActorIzq = aeShowActor(aeArrIzq);
+     }
+     else
+     {
+          aeArrDer[aeObservador]= "_";
+          aeArrIzq[aeOpcionMenu]= aeActorCruza;
+          aeActorDer = aeShowActor(aeArrDer);
+     }
+
+     // --------->  De IZQ a DERS
+     if(aeObsEstaIzq)
+     {
+          for (int i = 0; i < aeAnchoRio ; i++)
+               cout << "\r" << aeShowBarcaNavegando(i, aeActorIzq, aeBarca, aeActorDer);
+     }
+     
+     // <--------- De DER a IZQ
+     else
+          for (int i = aeAnchoRio; i > 0 ; i--)
+               cout << "\r" << aeShowBarcaNavegando(i, aeActorIzq, aeBarca, aeActorDer);
+     
+     aeObsEstaIzq=!aeObsEstaIzq;
+
+     cout << endl;
+}
+
+/** Menu que se presenta en consola para que el usuario escoja la opcion que desea mover junto con la barca
+*/
+bool aeMenu()
+{
+     cout << "\n 0. Solo\n 1. Lobo\n 2. Caperucita\n 3. Uvas\n 4. Salir\n";
+
+     //se encarga de validar la opción ingresada por el usuario
+     do
+     {
+          try                 //Entrada de opción ingresada por el usuario
+          {
+               string aeOpcionIngresada = "";
+               cout << "\nCruzar con: ";
+               cin >> aeOpcionIngresada;               //lectura de la opción ingresada
+               aeOpcionMenu = stoi(aeOpcionIngresada); //Transformación de string a int "stoi" para poder leer la opción ingresada con condicionales
+
+               //SEGMENTATION FAULT?
+               aeActorCruza = (aeObsEstaIzq) ? aeArrIzq[aeOpcionMenu] : aeArrDer[aeOpcionMenu];     //Confirmación de estado del observador IZQ o DER
+               if(aeOpcionMenu == 4) exit(0);          //si la opción es 4, terminar el programa
+               if(aeActorCruza.empty())
+                    throw invalid_argument("No hay acto\n\n ");       //muerte del programa a prósito para controlar errores cuando la opcion ingresada no es válida
+          }
+          catch(...)          //captura cualquier tipo de muerte del programa y la maneja de esta forma
+          {
+               aeActorCruza = "";
+               aeOpcionMenu = -1;
+               cout << "\nOpcion no valida\n\n";
+          }
+     
+     } while (aeOpcionMenu < 0);
+
+     return true;
+}
+
+void aeValidarReglasJuego()
+{
+     string aeMensajeJuego = "";
+
+     bool aeTodosCruzaron  =  (!aeArrDer[aeObservador].empty() && !aeArrDer[aeLobo].empty()
+                              && !aeArrDer[aeCaperucita].empty() && !aeArrDer[aeUvas].empty());
+
+     bool aeLoboCaperucita =  (aeObsEstaIzq) ? 
+                              (!aeArrDer[aeLobo].empty() && !aeArrDer[aeCaperucita].empty()) :
+                              (!aeArrIzq[aeLobo].empty() && !aeArrIzq[aeCaperucita].empty());
+                 
+     bool aeCaperucitaUvas =  (aeObsEstaIzq) ? 
+                              (!aeArrDer[aeCaperucita].empty() && !aeArrDer[aeUvas].empty()) :
+                              (!aeArrIzq[aeCaperucita].empty() && !aeArrIzq[aeUvas].empty());
+
+     aeMensajeJuego  +=   (aeLoboCaperucita) ? "\n   El LOBO se comió a CAPERUCITA, OH NO" : "" ;
+     aeMensajeJuego  +=   (aeCaperucitaUvas) ? "\n   CAPERUCITA se comio las UVAS, OH NO"  : "" ;
+     aeMensajeJuego  +=   (aeTodosCruzaron ) ? "\n\t     FELICIDADES GANASTE" : "";
+
+     if (!aeMensajeJuego.empty())
+     {
+          if(aeLoboCaperucita || aeCaperucitaUvas)
+          {
+               aeSetColor(rojo);
+               aeMensajeJuego += "\n\n\t\t  PERDISTE\n\n";
+          }
+          else
+               aeSetColor(verde);
+          cout << "\n\t\tFIN DEL JUEGO" << endl << aeMensajeJuego << "\n\n";
+          exit(0);
+     }
+}
+
+/** Metodo que contiene la logica de como va a funcionar el juego
+*/
 void aeJuegoVikingo()
 {
      /*Aqui dentro se añade la lógica que debería tomar el programa del juego*/
-     cout << endl << aeUser << "\n";
-     cout << endl << "Se ejecuta el juego..." << endl;
+     while (aeMenu())
+     {
+          if(aeOpcionMenu == 0)
+               cout << "Esta cruzando: " << aeUser       << "\n\n";
+          else
+               cout <<"Esta cruzando: "  << aeActorCruza << "\n\n";
+          
+          aeNavegar();
+
+          aeValidarReglasJuego();
+     }
 }
 
-/*LÓGICA MAIN DEL PROGRAMA*/
+
+//LÓGICA MAIN DEL PROGRAMA
 
 int main()
 {
      aeClearTerminal();
      
      //actualiza la variable global de aeUser
-     aeCredencialesValidar();
+     //aeCredencialesValidar();
+     //aeUser = "Observador";
 
-     cout << endl;
+     aeUser = "ALISSON";
 
      aeJuegoVikingo();
-     
+
      return 0;
 }
 
 /*
-LÓGICA DEL PROGRAMA SEGUN LA CAPTURA DEL POCO CÓDIGO QUE PUDE VER DEL ING
-
-1. Declarar variables string para ladoIzq y ladoDer y para el actor que cruza
-2. Declarar variable bool para confirmar el estado del observador
-3. Declarar variables int para luego añadir en el menú
-
-     int aeOpcionMenu = -1, aeAnchoRio = 20, aeObservador = 0, aeLobo = 1, aeCaperucita = 2, aeUvas = 3;
-
-4. Crear métodos
-
-     4.1. string aguaRio (int len)
-          va a definir cual es la longitud del río por la que la barca va a pasar
-          sirve para presentar caracteres _ a la izquierda y a la derecha conforme
-          la barca va avanzando
-
-     4.2. string getActores (const string arrActores[])
-          va a funcionar como menú para que el usuario escoja que actor quiere que
-          esté en la barca junto con el al momento de cruzar el río
-
-     4.3. void validarReglas()
-          sirve para determinar si las reglas del juego se están cumpliendo al
-          momento de movilizar a los actores de un lado a otro
-
-     4.4. void showBarcaRio(int 1, const string barca)
-          va a presentar la barca movilizandose de un izquierda a derecha
-
-     4.5. showNavegación()
-          \\_patmic_,_?_/ reemplaza el ? por el actor que está cruzando
-*/
-
-/*   
-LÓGICA DEL PROGRAMA SEGUN COMO YO CREO QUE DEBERÍA FUNCIONAR (pseudocódigo)
-
+se imprime la barca navegando de regreso
+valido antes de que se imprima el menú
 */

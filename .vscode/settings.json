@@ -3,6 +3,7 @@
           "*.excalidraw": "json",
           "*.excalidrawlib": "json",
           "ostream": "cpp",
-          "random": "cpp"
+          "random": "cpp",
+          "iostream": "cpp"
      }
 }
