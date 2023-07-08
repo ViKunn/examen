@@ -285,6 +285,9 @@ bool aeMenu()
      return true;
 }
 
+/** Validacion de las reglas del juego conforme a la rubrica del examen
+ * Cedula termina en 5, entonces Caperucita NO se come las Uvas 
+*/
 void aeValidarReglasJuego()
 {
      string aeMensajeJuego = "";
@@ -295,24 +298,22 @@ void aeValidarReglasJuego()
      bool aeLoboCaperucita =  (aeObsEstaIzq) ? 
                               (!aeArrDer[aeLobo].empty() && !aeArrDer[aeCaperucita].empty()) :
                               (!aeArrIzq[aeLobo].empty() && !aeArrIzq[aeCaperucita].empty());
-                 
-     bool aeCaperucitaUvas =  (aeObsEstaIzq) ? 
-                              (!aeArrDer[aeCaperucita].empty() && !aeArrDer[aeUvas].empty()) :
-                              (!aeArrIzq[aeCaperucita].empty() && !aeArrIzq[aeUvas].empty());
-
+     
      aeMensajeJuego  +=   (aeLoboCaperucita) ? "\n   El LOBO se comió a CAPERUCITA, OH NO" : "" ;
-     aeMensajeJuego  +=   (aeCaperucitaUvas) ? "\n   CAPERUCITA se comio las UVAS, OH NO"  : "" ;
-     aeMensajeJuego  +=   (aeTodosCruzaron ) ? "\n\t     FELICIDADES GANASTE" : "";
+     aeMensajeJuego  +=   (aeTodosCruzaron ) ? "\n\t     FELICIDADES GANASTE"              : "";
 
      if (!aeMensajeJuego.empty())
      {
-          if(aeLoboCaperucita || aeCaperucitaUvas)
+          if(aeLoboCaperucita /* || aeCaperucitaUvas */)
           {
                aeSetColor(rojo);
                aeMensajeJuego += "\n\n\t\t  PERDISTE\n\n";
           }
           else
+          {
                aeSetColor(verde);
+               aeMensajeJuego += "\n\n\t      TE SALVASTE UVITA";
+          }
           cout << "\n\t\tFIN DEL JUEGO" << endl << aeMensajeJuego << "\n\n";
           exit(0);
      }
@@ -342,19 +343,13 @@ void aeJuegoVikingo()
 int main()
 {
      aeClearTerminal();
-     
-     //actualiza la variable global de aeUser
-     //aeCredencialesValidar();
-     //aeUser = "Observador";
 
-     aeUser = "ALISSON";
+     //actualiza la variable global de aeUser que luego se utiliza en la barca
+     aeCredencialesValidar();
+
+     // aeUser = "ALISSON";
 
      aeJuegoVikingo();
 
      return 0;
 }
-
-/*
-se imprime la barca navegando de regreso
-valido antes de que se imprima el menú
-*/
