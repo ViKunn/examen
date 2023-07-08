@@ -39,7 +39,8 @@ string aeArrIzq[]   = { " ", "Lobo", "Cape", "Uvas" },
 //MÉTODOS PARA PRESENTACIÓN DE DATOS DEL ESTUDIANTE
 
 /** Pasar a MINUSCULAS
- * @param aeTexto string, El texto que se quiere modificar 
+ * @param aeTexto string, El texto que se quiere modificar
+ * @return El texto ya modificado 
 */
 string aeToLower(const string& aeTexto)
 {
@@ -50,7 +51,8 @@ string aeToLower(const string& aeTexto)
 }
 
 /** Pasar a MAYUSCULAS
- * @param aeTexto string, El texto que se quiere modificar 
+ * @param aeTexto string, El texto que se quiere modificar
+ * @return El texto ya modificado
 */
 string aeToUpper(const string& aeTexto)
 {
@@ -77,6 +79,7 @@ void aeShowDatosEstudiante()
 
 /** Encriptación de caracteres de contraseña en consola
  * @param aeEtiqueta string, La etiqueta que se presenta al momento de pedir al usuario el ingreso de datos
+ * @return la contraseña para la posterior lectura de datos
 */
 string aeGetPassword(const string aeEtiqueta)
 {
@@ -173,6 +176,7 @@ void aeCredencialesValidar()
 
 /** Muestra en consola los strings de actores creados
  * @param aeArr string que se quiere mostrar
+ * @return el array seleccionado, pero ahora con los actores actuales de acuerdo a como se vayan modificando
 */
 string aeShowActor(const string aeArr[])
 {
@@ -184,6 +188,7 @@ string aeShowActor(const string aeArr[])
 
 /** Genera "_ " cierta cantidad de veces
  * @param aeLenRio cantidad de caracteres que se quiere generar
+ * @return un array con cierta cantidad de "_ " para representar el rio
 */
 string aeShowRio(int aeLenRio)
 {
